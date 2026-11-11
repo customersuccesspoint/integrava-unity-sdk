@@ -1,6 +1,6 @@
 {
   "name": "ai.integrava.unity",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "displayName": "Integrava Unity SDK (beta)",
   "description": "Beta HTTP client for Integrava chat, identify tokens, and Help Center articles. Not a native iOS, Android, React Native, or Flutter package.",
   "unity": "2021.3",

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -558,18 +559,89 @@ namespace Integrava.Sample
                 || value.IndexOf("opsflow_sk_", StringComparison.Ordinal) >= 0;
         }
 
-        void BuildUi()
+        static Font TryBuiltinFont(string resourceName)
         {
-            if (font == null) font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            if (font == null) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            if (string.IsNullOrEmpty(resourceName)) return null;
+            try
+            {
+                return Resources.GetBuiltinResource<Font>(resourceName);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
-            if (EventSystem.current == null)
+        static void AddInputModule(GameObject eventSystem)
+        {
+            // New Unity 6 projects enable the Input System only. StandaloneInputModule
+            // reads UnityEngine.Input and throws on that setting. Both still has legacy
+            // input, so StandaloneInputModule is a safe fallback if the package is missing.
+#if ENABLE_INPUT_SYSTEM && INTEGRAVA_HAS_INPUT_SYSTEM
+            if (TryAddInputSystemUiModule(eventSystem)) return;
+#elif ENABLE_INPUT_SYSTEM
+            // The version define did not match this package version. Still avoid UnityEngine.Input.
+            if (TryAddInputSystemUiModule(eventSystem)) return;
+#endif
+#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+            return;
+#endif
+            eventSystem.AddComponent<StandaloneInputModule>();
+        }
+
+#if ENABLE_INPUT_SYSTEM
+        static bool TryAddInputSystemUiModule(GameObject eventSystem)
+        {
+            try
+            {
+                var assembly = Assembly.Load("Unity.InputSystem");
+                var moduleType = assembly.GetType("UnityEngine.InputSystem.UI.InputSystemUIInputModule");
+                if (moduleType == null) return false;
+                var module = eventSystem.AddComponent(moduleType);
+                if (module == null) return false;
+                try
+                {
+                    var assign = moduleType.GetMethod("AssignDefaultActions", BindingFlags.Instance | BindingFlags.Public);
+                    if (assign != null && assign.GetParameters().Length == 0)
+                        assign.Invoke(module, null);
+                }
+                catch (Exception)
+                {
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+#endif
+
+        void EnsureEventSystem()
+        {
+            if (EventSystem.current != null) return;
+            try
             {
                 _eventSystem = new GameObject("EventSystem");
                 _eventSystem.AddComponent<EventSystem>();
-                _eventSystem.AddComponent<StandaloneInputModule>();
+                AddInputModule(_eventSystem);
                 _createdEventSystem = true;
             }
+            catch (Exception)
+            {
+                _createdEventSystem = _eventSystem != null;
+            }
+        }
+
+        void BuildUi()
+        {
+            if (font == null)
+            {
+                font = TryBuiltinFont("LegacyRuntime.ttf");
+                if (font == null) font = TryBuiltinFont("Arial.ttf");
+            }
+
+            EnsureEventSystem();
 
             _canvasObject = new GameObject("IntegravaCanvas");
             var canvas = _canvasObject.AddComponent<Canvas>();

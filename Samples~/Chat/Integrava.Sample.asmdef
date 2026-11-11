@@ -9,6 +9,12 @@
   "precompiledReferences": [],
   "autoReferenced": true,
   "defineConstraints": [],
-  "versionDefines": [],
+  "versionDefines": [
+    {
+      "name": "com.unity.inputsystem",
+      "expression": "1.0.0-preview.1",
+      "define": "INTEGRAVA_HAS_INPUT_SYSTEM"
+    }
+  ],
   "noEngineReferences": false
 }
