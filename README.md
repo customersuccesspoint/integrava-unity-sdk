@@ -9,10 +9,10 @@ The server secret key (`integrava_sk_…`) stays on your server. The player hold
 Unity 2021.3 or newer. In Package Manager, choose Add package from git URL:
 
 ```
-https://github.com/customersuccesspoint/integrava-unity-sdk.git#v0.1.1
+https://github.com/customersuccesspoint/integrava-unity-sdk.git#v0.1.2
 ```
 
-`package.json` is at the repository root. The `#v0.1.1` tag is this beta. Pin that tag when you ship.
+`package.json` is at the repository root. The `#v0.1.2` tag is this beta. Pin that tag when you ship.
 
 The package name is `ai.integrava.unity`. An OpenUPM listing is a separate step. There is no release tarball.
 
@@ -26,6 +26,16 @@ The package name is `ai.integrava.unity`. An OpenUPM listing is a separate step.
 Import the sample from Package Manager, Integrava Unity SDK (beta), Samples.
 
 The sample stores the conversation id in PlayerPrefs. The key is a hash of the API host and the widget token, so staging and production do not share a session, and the token is not the key. Backgrounding the app stops the long poll. It starts again when the player returns. Unloading the scene cancels requests that are still in flight. The Unity transport and PlayerPrefs store must be called from the main thread.
+
+## Input
+
+The chat sample supports Active Input Handling set to Input Manager (Old), Input System Package, or Both.
+
+- Input Manager (Old) only: the sample creates an EventSystem with StandaloneInputModule. This is the usual setup on Unity 2021.3.
+- Input System Package only: this is the default for a new Unity 6 project. When `com.unity.inputsystem` is installed, the sample creates an EventSystem with InputSystemUIInputModule and does not call `UnityEngine.Input`.
+- Both: the sample uses InputSystemUIInputModule when that package is installed.
+
+The sample assembly does not reference `com.unity.inputsystem`. A project without that package still compiles, and the sample uses StandaloneInputModule.
 
 ## iOS and Android
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- The chat sample tries LegacyRuntime.ttf first, then Arial.ttf, and still builds the UI if neither built-in font loads. Unity 6 throws when code requests Arial.ttf.
+- The chat sample adds InputSystemUIInputModule when the Input System is enabled and com.unity.inputsystem is installed, and StandaloneInputModule otherwise. Input System only, the legacy Input Manager only, and Both are supported. The sample does not call UnityEngine.Input while the legacy Input Manager is off.
+
 ## 0.1.1
 
 - Added .meta files so Unity imports the scripts and assembly definitions from a Git package.
