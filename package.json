@@ -1,0 +1,17 @@
+{
+  "name": "ai.integrava.unity",
+  "version": "0.1.1",
+  "displayName": "Integrava Unity SDK (beta)",
+  "description": "Beta HTTP client for Integrava chat, identify tokens, and Help Center articles. Not a native iOS, Android, React Native, or Flutter package.",
+  "unity": "2021.3",
+  "license": "MIT",
+  "documentationUrl": "https://integrava.ai/documentation/unity",
+  "dependencies": {},
+  "samples": [
+    {
+      "displayName": "Chat sample",
+      "description": "Restylable uGUI chat, Help Center list, and a Node snippet that mints identify tokens on your server.",
+      "path": "Samples~/Chat"
+    }
+  ]
+}

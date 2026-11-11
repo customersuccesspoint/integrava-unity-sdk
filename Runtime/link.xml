@@ -1,0 +1,8 @@
+<linker>
+  <!-- High managed stripping can drop UnityWebRequest if it only sees package references late. Keep the types this transport calls. -->
+  <assembly fullname="UnityEngine.UnityWebRequestModule">
+    <type fullname="UnityEngine.Networking.UnityWebRequest" preserve="all" />
+    <type fullname="UnityEngine.Networking.UploadHandlerRaw" preserve="all" />
+    <type fullname="UnityEngine.Networking.DownloadHandlerBuffer" preserve="all" />
+  </assembly>
+</linker>

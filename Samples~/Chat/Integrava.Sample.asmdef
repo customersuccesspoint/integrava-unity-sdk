@@ -1,0 +1,14 @@
+{
+  "name": "Integrava.Sample",
+  "rootNamespace": "Integrava.Sample",
+  "references": ["Integrava.Core", "Integrava.Runtime", "UnityEngine.UI"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
